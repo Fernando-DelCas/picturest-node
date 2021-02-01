@@ -4,7 +4,7 @@
   "description": "Nuclio pinterest clone API",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo \"Error: no test specified\" && exit 0",
     "start": "nodemon src/index.js"
   },
   "author": "eaarranz",
@@ -16,7 +16,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-jwt": "^6.0.0",
-    "mongoose": "^5.11.7",
+    "mongoose": "^5.11.8",
     "morgan": "^1.10.0"
   },
   "devDependencies": {

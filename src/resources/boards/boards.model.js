@@ -1,22 +1,21 @@
 const mongoose = require('mongoose');
 
 // Define model schema
-const userModelSchema = mongoose.Schema({
+const boardModelSchema = mongoose.Schema({
   id: Number,
-  firstName: String,
-  lastName: String,
-  email: String,
-  avatar: String,
-  password: String,
-  username: String,
-  following: []
+  author: { 
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'UserModel',
+  },
+  title: String,
+  collaborators: []
 });
 
 // Compile model from schema
-const User = mongoose.model('UserModel', userModelSchema );
+const Board = mongoose.model('BoardModel', boardModelSchema );
 
-const create = (user) => {
-  User.create(user, function (err, docs) {
+const create = (board) => {
+  Board.create(board, function (err, docs) {
     if (err){ 
       console.log(err) 
     }
@@ -26,18 +25,18 @@ const create = (user) => {
   });
 };
 
-const get = async (id) => {
+const get = async(id) => {
   let query = { 'id': id };
-  return await User.findOne(query);
+  return await Board.findOne(query)..populate('author');
 };
 
 const all = async() => {
-  return await User.find();
+  return await Board.find().populate('author');
 }
 
 const remove = (id) => {
   let query = { 'id': id };
-  User.deleteOne(
+  Pin.deleteOne(
     query,
     function (err, docs) { 
       if (err){ 
@@ -49,11 +48,11 @@ const remove = (id) => {
   }); 
 };
 
-const update = (id, updateduser) => {
+const update = (id, updatedboard) => {
   let query = { 'id': id };
-  User.updateOne(
+  Board.updateOne(
     query,
-    updateduser, 
+    updatedboard, 
     function (err, docs) { 
       if (err){ 
         console.log(err) 

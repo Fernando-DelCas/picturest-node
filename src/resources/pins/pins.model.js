@@ -1,22 +1,24 @@
 const mongoose = require('mongoose');
 
 // Define model schema
-const userModelSchema = mongoose.Schema({
+const pinModelSchema = mongoose.Schema({
   id: Number,
-  firstName: String,
-  lastName: String,
-  email: String,
-  avatar: String,
-  password: String,
-  username: String,
-  following: []
+  board: Number,
+  author: { 
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'UserModel',
+  },
+  source: String,
+  urlImage: String,
+  name: String,
+  description: String
 });
 
 // Compile model from schema
-const User = mongoose.model('UserModel', userModelSchema );
+const Pin = mongoose.model('PinModel', pinModelSchema );
 
-const create = (user) => {
-  User.create(user, function (err, docs) {
+const create = (pin) => {
+  Pin.create(pin, function (err, docs) {
     if (err){ 
       console.log(err) 
     }
@@ -26,18 +28,18 @@ const create = (user) => {
   });
 };
 
-const get = async (id) => {
+const get = async(id) => {
   let query = { 'id': id };
-  return await User.findOne(query);
+  return await Pin.findOne(query);
 };
 
 const all = async() => {
-  return await User.find();
+  return await Pin.find();
 }
 
 const remove = (id) => {
   let query = { 'id': id };
-  User.deleteOne(
+  Pin.deleteOne(
     query,
     function (err, docs) { 
       if (err){ 
@@ -49,11 +51,11 @@ const remove = (id) => {
   }); 
 };
 
-const update = (id, updateduser) => {
+const update = (id, updatedpin) => {
   let query = { 'id': id };
-  User.updateOne(
+  Pin.updateOne(
     query,
-    updateduser, 
+    updatedpin, 
     function (err, docs) { 
       if (err){ 
         console.log(err) 
