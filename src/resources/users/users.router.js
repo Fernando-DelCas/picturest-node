@@ -3,8 +3,14 @@ const boardsController = require('../boards/boards.controller');
 const pinsController = require('../pins/pins.controller');
 const usersController = require('./users.controller');
 const router = Router();
+const { body } = require('express-validator');
 
-router.route('/').get(usersController.getAll).post(usersController.create);
+router.route('/').get(usersController.getAll).post(
+   // username must be an email
+  body('email').isEmail(),
+  // password must be at least 5 chars long
+  body('password').isLength({ min: 5 }),
+  usersController.create);
 router
   .route('/:id')
   .get(usersController.getOne)

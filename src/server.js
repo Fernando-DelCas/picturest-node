@@ -9,7 +9,6 @@ const usersRouter = require('./resources/users/users.router');
 const boardsRouter = require('./resources/boards/boards.router');
 const jwt = require('express-jwt');
 const dotenv = require("dotenv");
-const mongo = require("./config/mongo");
 
 dotenv.config();
 const app = express();
@@ -24,6 +23,10 @@ app.use('/', authRouter);
 app.use('/api/pins', pinsRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/boards', boardsRouter);
+app.use('/healthcheck', (req, res) => {
+  console.log('GET healthcheck!');
+  return res.status(200).json({ message: 'OK' });
+});
 
 app.get('/protected', jwt( { secret: process.env.TOKEN_SECRET, algorithms: ['HS256'] } ), (req, res) => {
   res.send('protected');
@@ -41,5 +44,5 @@ const start = async () => {
 
 module.exports = {
   start,
-  app,
+  app
 };
